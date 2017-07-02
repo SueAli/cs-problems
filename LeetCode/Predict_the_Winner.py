@@ -1,9 +1,12 @@
 # Predict the Winner
+# Recursion Dynamic Programing
+# Minimax
 class Solution(object):
     def PredictTheWinner(self, nums):
         """
         :type nums: List[int]
         :rtype: bool
+
         Time Complexity is O( n * n )
         Space Complexity is O ( n * n ) for dp table
         """

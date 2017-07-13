@@ -5,7 +5,7 @@ class Solution(object):
         :type grid: List[List[int]]
         :rtype: int
         Time Complexity is O( m * n )
-        Space Complexity is O( m * n) --> could be done in O(n ) 
+        Space Complexity is O( m * n) --> could be done in O(n )
         """
         cache = {}
         def minPathSum(grid,i,j):

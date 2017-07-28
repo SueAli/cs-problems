@@ -1,4 +1,4 @@
-
+from collections import  deque
 # 11902 UVA  Dominator
 # Time Complexity V * V *V
 def dfs(src,adj_mat,visited):
@@ -6,6 +6,17 @@ def dfs(src,adj_mat,visited):
     for i in range(len(adj_mat[0])):
         if adj_mat[src][i] == 1 and not visited[i]:
             dfs(i,adj_mat,visited)
+
+def bfs(src, adj_mat, visited):
+    visited[src] = True
+    q = deque()
+    q.append(src)
+    while q:
+        curr_v = q.popleft()
+        for i in range(len(adj_mat[0])):
+            if not visited[i]  and adj_mat[curr_v][i] == 1:
+                visited[i] = True
+                q.append(i)
 
 
 def formatOutput(res,n):

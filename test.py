@@ -1,49 +1,104 @@
-import sys
 from collections import deque
-dir_ = [(0,-1),(0,1),(-1,0),(1,0)]
+import sys
+class loc:
+    def __init__(self,r,c,t,f):
+        self.row = r
+        self.col = c
+        self.time = t
+        self.facing = f
+
+def isBlock(g, i, j, M,N):
+    # if facing == 'south':
+    #     if g[r][c-1] =='1' or g[r][c] == '1':
+    #         return True
+    #     return False
+    # elif facing =='north':
+    #     if g[r-1][c-1]=='1' or g[r-1][c] =='1':
+    #         return True
+    #     return  False
+    # elif facing == 'west':
+    #     if g[r-1][c-1]=='1' or g[r][c-1]== '1':
+    #         return True
+    #     return False
+    # else:# east
+    #     if g[r-1][c]=='1' or g[r][c] =='1':
+    #         return  True
+    #     return False
+    if i < 1 or j < 1 or i > (N-1) or j > (M-1):
+        return  True
+    if (g[i][j] =='1'):
+        return True;
+    if ( g[i][j + 1] ):
+        return True;
+    if ( g[i + 1][j]):
+        return True;
+	if (g[i + 1][j + 1]):
+            return True
+    return False
+
+
 while True:
-  try:
-    R,C = map(int,input().split())
-    if R == 0 and C == 0 :
-      break
-    dist = [[sys.maxsize for _ in range(C)] for x in range(R)]
-    map_ = [[1 for _ in range(C)] for x in range(R)] # 1 : is Ok , 0 is bomb
+    try:
+        N,M = map(int,raw_input().split())
+        if N == 0 and M == 0 :
+            break
+        grid = []
+        bfs_q = deque()
+        dir_words = ['s','n','w','e']
+        dir_ = [(1,0),
+                (-1,0),
+                (0,-1),
+                (0,1)]
+        forward_steps = [1,2,3]
+        loc_time = [[[sys.maxsize for d in range(4)] for mm in range(N)] for nn in range(M)]
+        for i in range(N):
+            grid.append(raw_input().split()) # 1 block , 0 Empty cell
 
-    b_rows= int(input())
-    for _ in range(b_rows):
-      cols = list(map(int,input().split()))
-      row_id = cols[0]
-      for c_id in range(1,len(cols)):
-        map_[row_id][cols[c_id]] = 0
+        B1,B2,E1,E2,facing= raw_input().split()
+        src_i,src_j,dst_i,dst_j = int(B1),int(B2), int(E1), int(E2)
+
+        for i in range(4):
+            if dir_words[i][0] == facing[0]:
+                 loc_time[src_i][src_j][i] =0
+                 bfs_q.append(loc(src_i,src_j,0,i))
+                 break
 
 
-    src_r, src_c = map(int, input().split())
-    dst_r, dst_c = map(int, input().split())
-    dist[src_r][src_c] = 0
-    q = deque()
-    q.append((src_r,src_c))
-    sol_fnd = False
-    while q :
-      if sol_fnd:
+
+
+
+
+
+
+        notFound = True
+        level = 0
+        while bfs_q:
+                curr_loc = bfs_q.popleft()
+                if curr_loc.row == dst_i and curr_loc.col == dst_j:
+                    notFound = False
+                    print(level)
+                    break
+
+                for step in forward_steps:
+                    next_r = curr_loc.row + step* dir_[curr_loc.facing][0]
+                    next_c = curr_loc.col + step* dir_[curr_loc.facing][1]
+                    if  ( isBlock(grid,next_r,next_c,M,N)):
+                        break
+
+                    if loc_time[next_r][next_c][curr_loc.facing] < 1+loc_time[curr_loc.row][curr_loc.col][curr_loc.facing]:
+                        continue
+
+                    loc_time[next_r][next_c][curr_loc.facing]= curr_loc.time +1
+                    bfs_q.append(loc(next_r,next_c,loc_time[next_r][next_c][curr_loc.facing],curr_loc.facing))
+
+
+                for f in range(4):
+                    if (f != curr_loc.facing
+                        and loc_time[curr_loc.row][curr_loc.col][f] > 1+loc_time[curr_loc.row][curr_loc.col][curr_loc.facing] ):
+                        loc_time[curr_loc.row][curr_loc.col][f] = 1+loc_time[curr_loc.row][curr_loc.col][curr_loc.facing]
+                        bfs_q.append(loc(curr_loc.row,curr_loc.col,curr_loc.time,f))
+
+        if notFound:
+            print (-1)
+    except :
         break
-      u_r, u_c = q.popleft()
-
-      for d in dir_:
-        v_r, v_c = u_r+d[0], u_c + d[1]
-        if (v_r <0 or v_c < 0 or v_r == R or v_c == C or map_[v_r][v_c] == 0 or
-        dist[v_r][v_c] != sys.maxsize):
-          continue
-
-        dist[v_r][v_c] = dist[u_r][u_c] +1
-        if v_r == dst_r and v_c == dst_c:
-          sol_fnd = True
-          break
-        q.append((v_r,v_c))
-
-    print( dist[dst_r][dst_c])
-
-
-    #src_r, src_c = map(int, input())
-
-  except:
-    break

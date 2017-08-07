@@ -2,6 +2,8 @@
 import sys
 from heapq import  heappush, heappop
 
+# Time complexity is O(E+V log v) # visit all nodes and edges and use priority queue
+
 class floor :
     def __init__(self,t,l, e):
         self.reached_  = t

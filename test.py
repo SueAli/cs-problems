@@ -1,36 +1,58 @@
-#!/bin/python3
+class Solution(object):
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        
+        
+        def decodeRec(str_, curr_idx):
+            res =""
+         
+            if curr_idx[0] >= len(str_) : # it is the end  so return -1 
+                return  res 
+            
+            else:
+                
+                # if  str_[curr_idx[0]] == ']':
+                #     curr_idx[0] += 1
+                #     return -1, res  
+                
+                if str_[curr_idx[0]] in ('[',']'): # 1 means continue 
+                    curr_idx[0] += 1
+                    return  res  
+                
+                elif not str_[curr_idx[0]].isdigit(): # it is a char 
+                    prev = curr_idx[0]
+                    curr_idx[0] += 1
+                    return str_[prev]
+            
+                else: # it is a digit 
+                    j = curr_idx[0] 
+                    repeat_cnt = '0'
+                    while j < len(str_) and str_[j].isdigit():  
+                        repeat_cnt += str_[j]
+                        j += 1
+                        curr_idx[0] = j 
 
-import sys
-import bisect 
-
-def solve(s, k):
-    # Complete this function
-    occur_dic = {}
-    for i in range(len(s)):  # key = char , value = [cnt,list of idxs] 
-        if s[i] in occur_dic: 
-            occur_dic[s[i]][0] += 1 
-            occur_dic[s[i]][1].append(i)
-        else:
-            occur_dic[s[i]] = [1,[i]]
-    distinct_chars = sorted(occur_dic.keys(), reverse = True)
-    res_sub = []
-    curr_idx = -1 
-    for c in distinct_chars : 
-        if occur_dic[c][0] < k : 
-            continue
-        char_occr = occur_dic[c][1]
-        tmp_idx = bisect.bisect_left(char_occr, curr_idx)
-        if len(curr_idx) - tmp_idx >= k :
-            for j in range(tmp_idx,len(char_occr)):
-                pos = char_occr[j]
-                res_sub.append(s[pos])
-                curr_idx = pos
-
-    return "".join(res_sub)
-
-
-if __name__ == "__main__":
-    s = input().strip()
-    k = int(input().strip())
-    result = solve(s, k)
-    print(result)
+                    repeat_cnt = int(repeat_cnt)
+                    final_res = ''
+                    print (repeat_cnt)
+                    while curr_idx[0] < len(str_) and str_[curr_idx[0]] != ']':
+                        res +=  decodeRec(str_, curr_idx)
+                        #res += tmp_res
+                    while repeat_cnt > 0: 
+                        final_res+= res
+                        repeat_cnt -= 1
+                            
+                    return final_res 
+                        
+        decoed_str =''
+        idx = [0]
+        while idx[0] < len(s):
+            decoed_str +=  decodeRec(s, idx)      
+        return decoed_str
+                
+                
+                
+            

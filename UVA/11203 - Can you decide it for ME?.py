@@ -28,17 +28,19 @@ def isTheorem(me_txt):
                 if me_txt[i] == '?':
                     back_symb += 1
                 else:
-                    return 'no-theorem'
+                    return "no-theorem"
                 i += 1
-    if mid_symb >= 1 and back_symb > front_symb  and back_symb > mid_symb:
-        return 'thoerem'
-    return 'no-thoerem'
+    if not (mid_symb == 0 or back_symb == 0 or front_symb == 0 ) \
+            and ( (mid_symb == 1 and back_symb - front_symb == 1 ) or
+                      (front_symb + mid_symb == back_symb)):
+        return 'theorem'
+    return "no-theorem"
 
 
 n = int(input())
 while n > 0 :
     n -= 1
-    me_txt = input()
-    print (isTheorem(me_txt))
+    txt = input()
+    print (isTheorem(txt))
 
 

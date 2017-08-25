@@ -1,3 +1,7 @@
+# Count of Smaller Numbers After Self
+# Time complexity is O(n* log n )
+# space complexity is O( n ) for merge operation
+
 class Solution(object):
     def merge(selfs, nums,idx_arr, l1, r1, l2, r2, res):
         start = l1
@@ -49,7 +53,3 @@ class Solution(object):
         idxx = [i for i in range(n)]
         self.mergeSort(nums,idxx,0,n-1,res )
         return res
-
-s = Solution()
-print s.countSmaller([5,6])
-

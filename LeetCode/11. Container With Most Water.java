@@ -1,4 +1,3 @@
-```java
 class Solution {
     public int maxArea(int[] height) {
         // Time complexity is O(n)
@@ -24,4 +23,3 @@ class Solution {
 
     }
 }
-```

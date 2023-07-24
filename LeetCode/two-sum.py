@@ -7,6 +7,8 @@
 
 class Solution:
   # brute force solution
+  # Time complexity => O(n*2)
+  # Space complexity => O(1)
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         n = len(nums)
         for i in range (0, n):
